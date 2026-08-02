@@ -64,4 +64,178 @@
 #include <iomanip>
 #include <string>
 using namespace std;
+#include <iostream>
+#include <vector>
+using namespace std;
 
+// Function to transpose a matrix
+vector<vector<int>> transposeMatrix(vector<vector<int>> matrix, int rows, int cols)
+{
+    vector<vector<int>> result(cols, vector<int>(rows));
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            result[j][i] = matrix[i][j];
+        }
+    }
+
+    return result;
+}
+
+// Function to add two matrices
+vector<vector<int>> addMatrices(vector<vector<int>> a, vector<vector<int>> b, int rows, int cols)
+{
+    vector<vector<int>> result(rows, vector<int>(cols));
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            result[i][j] = a[i][j] + b[i][j];
+        }
+    }
+
+    return result;
+}
+
+// Function to multiply two matrices
+vector<vector<int>> multiplyMatrices(vector<vector<int>> a, vector<vector<int>> b, int m, int n, int p)
+{
+    vector<vector<int>> result(m, vector<int>(p, 0));
+
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < p; j++)
+        {
+            for (int k = 0; k < n; k++)
+            {
+                result[i][j] += a[i][k] * b[k][j];
+            }
+        }
+    }
+
+    return result;
+}
+
+// Function to read a matrix
+vector<vector<int>> readMatrix(int rows, int cols)
+{
+    vector<vector<int>> matrix(rows, vector<int>(cols));
+
+    for (int i = 0; i < rows; i++)
+    {
+        cout << "Enter row " << i + 1 << ": ";
+        for (int j = 0; j < cols; j++)
+        {
+            cin >> matrix[i][j];
+        }
+    }
+
+    return matrix;
+}
+
+// Function to print a matrix
+void printMatrix(vector<vector<int>> matrix)
+{
+    for (int i = 0; i < matrix.size(); i++)
+    {
+        for (int j = 0; j < matrix[i].size(); j++)
+        {
+            cout << matrix[i][j] << "\t";
+        }
+        cout << endl;
+    }
+}
+
+int main()
+{
+    int choice;
+
+    cout << "Matrix Operations Menu:" << endl;
+    cout << "1. Transpose a Matrix" << endl;
+    cout << "2. Add Two Matrices" << endl;
+    cout << "3. Multiply Two Matrices" << endl;
+    cout << "Enter choice: ";
+    cin >> choice;
+
+    if (choice == 1)
+    {
+        int rows, cols;
+
+        cout << "Enter number of rows: ";
+        cin >> rows;
+        cout << "Enter number of columns: ";
+        cin >> cols;
+
+        vector<vector<int>> matrix = readMatrix(rows, cols);
+        vector<vector<int>> result = transposeMatrix(matrix, rows, cols);
+
+        cout << "\nOriginal Matrix:\n";
+        printMatrix(matrix);
+
+        cout << "\nTransposed Matrix:\n";
+        printMatrix(result);
+    }
+    else if (choice == 2)
+    {
+        int rows, cols;
+
+        cout << "Enter number of rows: ";
+        cin >> rows;
+        cout << "Enter number of columns: ";
+        cin >> cols;
+
+        cout << "\nEnter values for Matrix A:\n";
+        vector<vector<int>> a = readMatrix(rows, cols);
+
+        cout << "\nEnter values for Matrix B:\n";
+        vector<vector<int>> b = readMatrix(rows, cols);
+
+        vector<vector<int>> result = addMatrices(a, b, rows, cols);
+
+        cout << "\nSum Matrix:\n";
+        printMatrix(result);
+    }
+    else if (choice == 3)
+    {
+        int m, n, n2, p;
+
+        cout << "Enter rows of Matrix A (M): ";
+        cin >> m;
+
+        cout << "Enter columns of Matrix A (N): ";
+        cin >> n;
+
+        cout << "Enter rows of Matrix B (must equal N): ";
+        cin >> n2;
+
+        cout << "Enter columns of Matrix B (P): ";
+        cin >> p;
+
+        if (n != n2)
+        {
+            cout << "Error: Columns of A must equal rows of B." << endl;
+        }
+        else
+        {
+            cout << "\nEnter values for Matrix A:\n";
+            vector<vector<int>> a = readMatrix(m, n);
+
+            cout << "\nEnter values for Matrix B:\n";
+            vector<vector<int>> b = readMatrix(n, p);
+
+            vector<vector<int>> result = multiplyMatrices(a, b, m, n, p);
+
+            cout << "\nProduct Matrix:\n";
+            printMatrix(result);
+        }
+    }
+    else
+    {
+        cout << "Invalid choice." << endl;
+    }
+
+    return 0;
+}
